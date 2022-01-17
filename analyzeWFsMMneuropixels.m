@@ -17,8 +17,8 @@ importMMvivo4QC
 
 % load spike times (for visualization only, firing rate as a parameter is
 % taken from the Allen Institute measurement
-spTimesID = h5read('Spike_time.hdf5','/ids');
-sp = h5read('Spike_time.hdf5','/spikes_time');
+spTimesID = h5read(datafile.ECmouse,'/ids');
+sp = h5read(datafile.ECmouse,'/spikes_time');
 
 X.mouseVivo.all = [];
 list.mouseVivo.PV = []; list.mouseVivo.SST = []; list.mouseVivo.VIP =[];

@@ -4,13 +4,14 @@ loadFreeParametersCrossSpecies
 %}
 
 % set current directory
-datafolders.origDir = 'G:\My Drive\0 current projects\0 githubs\cross species ephys\cross-species-ephys-analysis\publishedCode';
+datafolders.origDir = 'G:\My Drive\0 current projects\0 githubs\aMethod';
 cd(datafolders.origDir) % dir
 
-datafile.IC = 'icDataStr.mat';
-datafile.MMpyrIDs = 'MMpyramidalIDs.mat';
-datafile.NHPdend = 'NHPdendriteNlayer.mat';
+datafile.IC = 'G:\My Drive\0 current projects\0 githubs\aMethod\data\icDataStr.mat';
+datafile.MMpyrIDs = 'G:\My Drive\0 current projects\0 githubs\aMethod\data\MMpyramidalIDs.mat';
+datafile.ECmouse = 'C:\Users\erics\OneDrive - The University of Western Ontario\working memory (RL MR BC)\Spike_time.hdf5';
 datafolders.NHPex = 'C:\Users\erics\OneDrive - The University of Western Ontario\working memory (RL MR BC)\single cells';
+datafile.NHPdend = 'NHPdendriteNlayer.mat';
 
 % sampling parameters used across datasets (to compute dV/dt)
 sample.RateIn = 5e4;                            % intracellular # samples per ms

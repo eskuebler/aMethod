@@ -83,8 +83,8 @@ intVec = 1:length(completeListIC);
 
 list.nhp.spiny = intVec(ismember(completeListIC,list.nhp.spiny));
 list.nhp.aspiny = intVec(ismember(completeListIC,list.nhp.aspiny));
-list.nhp0.spiny = intVec(ismember(completeListIC,list.nhp0.spiny));
-list.nhp0.aspiny = intVec(ismember(completeListIC,list.nhp0.aspiny));
+% list.nhp0.spiny = intVec(ismember(completeListIC,list.nhp0.spiny));
+% list.nhp0.aspiny = intVec(ismember(completeListIC,list.nhp0.aspiny));
 p2tr.nhp.all = p2tr.nhp.all(completeListIC);
 p2trPeak.nhp.all = p2trPeak.nhp.all(completeListIC);
 p2trTrough.nhp.all = p2trTrough.nhp.all(completeListIC);
@@ -107,8 +107,8 @@ intVec = 1:length(completeListIC);
 
 list.nhp.aspiny = intVec(ismember(completeListIC,list.nhp.aspiny));
 list.nhp.spiny = intVec(ismember(completeListIC,list.nhp.spiny));
-list.nhp0.aspiny = intVec(ismember(completeListIC,list.nhp0.aspiny));
-list.nhp0.spiny = intVec(ismember(completeListIC,list.nhp0.spiny));
+% list.nhp0.aspiny = intVec(ismember(completeListIC,list.nhp0.aspiny));
+% list.nhp0.spiny = intVec(ismember(completeListIC,list.nhp0.spiny));
 fr.nhp.all = fr.nhp.all(completeListIC);
 for i = 1:length(completeListIC)
     spTimesClean.nhp.all{i,1} = spTimes.nhp.all{completeListIC(i),1};

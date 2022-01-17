@@ -9,20 +9,14 @@ disp(['analyzing mouse & NHP intracellular waveforms...'])
 load(datafile.IC); mainParams = IC; clear IC % main data source
 IDai = mainParams.ID;
 
-%{
-
-!!!!!!!!!!!!!
-
-here the NHP dendrite type should be the newer file
-
-!!!!!!!!!!!!!
-
 %}
-load('NHPdend.mat','oldCellID','DendriteType')
+load('NHPdend (dec2021).mat','oldCellID','DendriteType')
 indNew = find(ismember(oldCellID,IDai)); % find matching IDs
 newDend = DendriteType(indNew); % pull new dendrite labels
+IDdend = oldCellID(indNew);
 mainParams.dendrite_type(1:length(indNew)) = newDend;
-load(datafile.NHPdend); IDdend = ID; clear ID oldCellID DendriteType newDend
+% load(datafile.NHPdend); IDdend = ID; 
+clear oldCellID DendriteType newDend indNew
 
 % load mouse pyramidal cell IDs
 load(datafile.MMpyrIDs); % mouse pyramidal cells 
@@ -35,8 +29,8 @@ X.mouse.all = []; X.nhp.all = [];
 dVdt.mouse.all = []; dVdt.nhp.all = [];
 list.mouse.spiny = []; list.mouse.aspiny = [];
 list.mouse.PV = []; list.mouse.VIP = []; list.mouse.SST = []; list.mouse.Pyr = [];
-list.nhp.spiny = []; list.nhp0.spiny = [];
-list.nhp.aspiny = []; list.nhp0.aspiny = [];
+list.nhp.spiny = []; %list.nhp0.spiny = [];
+list.nhp.aspiny = []; %list.nhp0.aspiny = [];
 
 N.mouse = 1; N.nhp = 1;
 for n = 1:length(mainParams.specimen)
@@ -107,11 +101,11 @@ for n = 1:length(mainParams.specimen)
             if mainParams.dendrite_type(n,1)=='S'
                 ctTag.NhpIC(1,N.nhp) = 2;
                 list.nhp.spiny = [list.nhp.spiny,N.nhp];
-                list.nhp0.spiny = [list.nhp0.spiny,n];
+%                 list.nhp0.spiny = [list.nhp0.spiny,n];
             elseif mainParams.dendrite_type(n,1)=='A'
                 ctTag.NhpIC(1,N.nhp) = 1;
                 list.nhp.aspiny = [list.nhp.aspiny,N.nhp];
-                list.nhp0.aspiny = [list.nhp0.aspiny,n];
+%                 list.nhp0.aspiny = [list.nhp0.aspiny,n];
             else
                 ctTag.NhpIC(1,N.nhp) = 0;
             end
