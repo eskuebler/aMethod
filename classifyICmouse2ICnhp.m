@@ -177,7 +177,61 @@ figure('Position',[50 50 270 200]); set(gcf,'color','w');
     zlabel('trough-to-peak ratio')
     view(-30,11)
     axis tight
-% cp = classperf(yGT(ind),temp(ind));
+
+spinyParvList = sum(predCT(:,1)==1 & yGT'==2);
+spinySSTList = sum(predCT(:,1)==2 & yGT'==2);
+spinyVIPList = sum(predCT(:,1)==3 & yGT'==2);
+spinyPyrList = sum(predCT(:,1)==4 & yGT'==2);
+aspinyParvList = sum(predCT(:,1)==1 & yGT'==1);
+aspinySSTList = sum(predCT(:,1)==2 & yGT'==1);
+aspinyVIPList = sum(predCT(:,1)==3 & yGT'==1);
+aspinyPyrList = sum(predCT(:,1)==4 & yGT'==1);
+mat = [aspinyParvList/sum(yGT'==2), ...
+    spinyParvList/sum(yGT'==1); ...
+    aspinySSTList/sum(yGT'==2), ...
+    spinySSTList/sum(yGT'==1);
+    aspinyVIPList/sum(yGT'==2), ...
+    spinyVIPList/sum(yGT'==1);...
+    aspinyPyrList/sum(yGT'==2), ...
+    spinyPyrList/sum(yGT'==1)];
+figure('Position',[50 50 200 150]); set(gcf,'color','w');
+    imagesc(mat)
+    colormap('gray')
+    h = colorbar;
+    ylabel(h, 'proportion')
+    xlabel('dendrite type')
+    xticks([1,2])
+    xticklabels({'aspiny','spiny'})
+    ylabel('putative cell type')
+    yticks(1:4)
+    yticklabels({'PV+','SST+','VIP+','Pyr'})
+    axis equal
+    axis tight
+    box off
+    dim = [.37 .93 0 0];
+    annotation('textbox',dim,'String',int2str(spinyParvList),...
+        'FitBoxToText','on','LineStyle','none','color','w');
+    dim = [.26 .93 0 0];
+    annotation('textbox',dim,'String',int2str(aspinyParvList),...
+        'FitBoxToText','on','LineStyle','none','color','k');
+    dim = [.37 .78 0 0];
+    annotation('textbox',dim,'String',int2str(spinySSTList),...
+        'FitBoxToText','on','LineStyle','none','color','w');
+    dim = [.26 .78 0 0];
+    annotation('textbox',dim,'String',int2str(aspinySSTList),...
+        'FitBoxToText','on','LineStyle','none','color','w'); 
+    dim = [.38 .62 0 0];
+    annotation('textbox',dim,'String',int2str(spinyVIPList),...
+        'FitBoxToText','on','LineStyle','none','color','w');
+    dim = [.26 .62 0 0];
+    annotation('textbox',dim,'String',int2str(aspinyVIPList),...
+        'FitBoxToText','on','LineStyle','none','color','k');
+    dim = [.4 .48 0 0];
+    annotation('textbox',dim,'String',int2str(spinyPyrList),...
+        'FitBoxToText','on','LineStyle','none','color','k');
+    dim = [.23 .48 0 0];
+    annotation('textbox',dim,'String',int2str(aspinyPyrList),...
+        'FitBoxToText','on','LineStyle','none','color','w');
 
 clear C
 for n = 1:length(temp(:,1))
@@ -195,10 +249,48 @@ figure('Position',[50 50 270 200]); set(gcf,'color','w');
     view(-30,11)
     axis tight
 
+aspinyNaspiny = sum(temp==1 & yGT'==1);
+aspinyNspiny = sum(temp==1 & yGT'==2);
+spinyNaspiny = sum(temp==2 & yGT'==1);
+spinyNspiny = sum(temp==2 & yGT'==2);
+
+mat = [aspinyNaspiny/length(list.nhp.aspiny), ...
+    aspinyNspiny/length(list.nhp.spiny); ...
+    spinyNaspiny/length(list.nhp.aspiny), ...
+    spinyNspiny/length(list.nhp.spiny)];
+figure('Position',[50 50 150 150]); set(gcf,'color','w');
+    imagesc(mat)
+    xlabel('dendrite type')
+    xticks([1,2])
+    xticklabels({'aspiny','spiny'})
+    ylabel('putative dendrite type')
+    yticks([1,2])
+    yticklabels({'aspiny','spiny'})
+    colormap('gray')
+    h = colorbar;
+    ylabel(h, 'proportion')
+    axis equal
+    axis tight
+    box off
+    dim = [.3 .685 0 0];
+    annotation('textbox',dim,'String',int2str(aspinyNaspiny),...
+        'FitBoxToText','on','LineStyle','none','color','k');
+    dim = [.45 .685 0 0];
+    annotation('textbox',dim,'String',int2str(aspinyNspiny),...
+        'FitBoxToText','on','LineStyle','none','color','w');
+    dim = [.33 .5 0 0];
+    annotation('textbox',dim,'String',int2str(spinyNaspiny),...
+        'FitBoxToText','on','LineStyle','none','color','w');
+    dim = [.45 .5 0 0];
+    annotation('textbox',dim,'String',int2str(spinyNspiny),...
+        'FitBoxToText','on','LineStyle','none');
+
 close all
 
 predStruct.nhpIC.IDs = specimenID.nhp.all;
 predStruct.nhpIC.putLabel = YTest2.ICnhp.NN;
 predStruct.nhpIC.gtLabel = yGT;
+
+gtSpinyPredAspiny = specimenID.nhp.all(find(yGT'==2 & temp==1));
 
 clear i
