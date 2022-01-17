@@ -2,14 +2,33 @@
 classifyICmouse2ICnhp
 %}
 
+close all
+
+% data we used as a model to classify NHP cells
+Y = X_IC;
+figure('Position',[50 50 270 200]); set(gcf,'color','w');
+hold on
+scatter3(Y(:,1),Y(:,2),zeros(size(Y,1),1),5,[0.9,0.9,0.9])
+scatter3(Y(:,1),zeros(size(Y,1),1)+max(Y(:,2)),Y(:,3),5,[0.9,0.9,0.9])
+scatter3(zeros(size(Y,1),1)+max(Y(:,1)),Y(:,2),Y(:,3),5,[0.9,0.9,0.9])
+scatter3(Y(list.mouse.PV,1),Y(list.mouse.PV,2),Y(list.mouse.PV,3),5,'r')
+scatter3(Y(list.mouse.SST,1),Y(list.mouse.SST,2),Y(list.mouse.SST,3),5,'g')
+scatter3(Y(list.mouse.VIP,1),Y(list.mouse.VIP,2),Y(list.mouse.VIP,3),5,'b')
+scatter3(Y(list.mouse.Pyr,1),Y(list.mouse.Pyr,2),Y(list.mouse.Pyr,3),5,'k')
+xlabel('trough-to-peak')
+ylabel('firing rate')
+zlabel('trough-to-peak ratio')
+grid on
+box off
+view(plots.az,plots.el)
+axis tight
+
+% NHP ground truth labels
 yGT = ctTag.NhpIC;
 
 % generate a dataset
 Xnhp = [T2P.nhp.all,log(fr.nhp.all),p2tr.nhp.all];
-% for i = 1:size(Xtemp,2)
-%     Xnhp(:,i) = rescale(Xtemp(:,i),0,1);
-% end
-clear Xtemp
+Xnhp(:,3) = rescale(Xnhp(:,3),0,1); % rescale P2TR like w/ mouse data
 
 % show the input matrix to classify
 Y = Xnhp;
@@ -49,7 +68,6 @@ for numRands = goodModelsIndex.NN % generate numRands models
 %     yTest = str2double(yTest);
     YTest.ICnhp.NN(:,count) = yTest;
     yTest2 = yTest;
-%     yVec.NN(count,:) = [sum(yTest2==1),sum(yTest2==2),sum(yTest2==3),sum(yTest2==4)];
     yTest2(yTest2==2) = 1;
     yTest2(yTest2==3) = 1;
     yTest2(yTest2==4) = 2;
@@ -59,38 +77,38 @@ for numRands = goodModelsIndex.NN % generate numRands models
         ./ cp.SampleDistributionByClass);
     correctRates.IC2ICnhp.NN(1,count) = cp.CorrectRate;
     
-    for n = 1:length(yTest)
-        if yTest(n) == 1; C(n,:) = plots.cc(1,:);
-        elseif yTest(n) == 2; C(n,:) = plots.cc(2,:);
-        elseif yTest(n) == 3; C(n,:) = plots.cc(3,:);
-        elseif yTest(n) == 4; C(n,:) = plots.cc(4,:);
-        end
-    end
-    figure('Position',[50 50 270 200]); set(gcf,'color','w');
-        scatter3(Xnhp(:,1),Xnhp(:,2),Xnhp(:,3),...
-            plots.mrkszr,C(:,:));
-        grid on;     
-        xlabel('trough-to-peak')
-        ylabel('firing rate')
-        zlabel('trough-to-peak ratio')
-        view(-30,11)
-        axis tight
-    
-    for n = 1:length(yTest2)
-        if yTest2(n) == 1; C(n,:) = plots.cc(1,:);
-        elseif yTest2(n) == 2; C(n,:) = plots.cc(4,:);
-        end
-    end    
-    figure('Position',[50 50 270 200]); set(gcf,'color','w');
-        scatter3(Xnhp(:,1),Xnhp(:,2),Xnhp(:,3),...
-            plots.mrkszr,C(:,:));
-        grid on;     
-        xlabel('trough-to-peak')
-        ylabel('firing rate')
-        zlabel('trough-to-peak ratio')
-        view(-30,11)
-        axis tight
-    close all
+%     for n = 1:length(yTest)
+%         if yTest(n) == 1; C(n,:) = plots.cc(1,:);
+%         elseif yTest(n) == 2; C(n,:) = plots.cc(2,:);
+%         elseif yTest(n) == 3; C(n,:) = plots.cc(3,:);
+%         elseif yTest(n) == 4; C(n,:) = plots.cc(4,:);
+%         end
+%     end
+%     figure('Position',[50 50 270 200]); set(gcf,'color','w');
+%         scatter3(Xnhp(:,1),Xnhp(:,2),Xnhp(:,3),...
+%             plots.mrkszr,C(:,:));
+%         grid on;     
+%         xlabel('trough-to-peak')
+%         ylabel('firing rate')
+%         zlabel('trough-to-peak ratio')
+%         view(-30,11)
+%         axis tight
+%     
+%     for n = 1:length(yTest2)
+%         if yTest2(n) == 1; C(n,:) = plots.cc(1,:);
+%         elseif yTest2(n) == 2; C(n,:) = plots.cc(4,:);
+%         end
+%     end    
+%     figure('Position',[50 50 270 200]); set(gcf,'color','w');
+%         scatter3(Xnhp(:,1),Xnhp(:,2),Xnhp(:,3),...
+%             plots.mrkszr,C(:,:));
+%         grid on;     
+%         xlabel('trough-to-peak')
+%         ylabel('firing rate')
+%         zlabel('trough-to-peak ratio')
+%         view(-30,11)
+%         axis tight
+%     close all
 
     clear yTest yTest2 x
 end
@@ -115,7 +133,7 @@ figure('Position',[50 50 360 100]); set(gcf,'color','w');
 % cell type, note: all proportions are reported, one (i.e., max) is chosen 
 count = 1;
 for n = 1:size(YTest.ICnhp.NN,1)
-    for ct = 1:2
+    for ct = 1:4
         ctConf.ICnhp.nn(count,ct) = sum(YTest.ICnhp.NN(n,:)==ct)/size(YTest.ICnhp.NN,2);
     end
     [predCT(count,2),predCT(count,1)] = max(ctConf.ICnhp.nn(count,:));
